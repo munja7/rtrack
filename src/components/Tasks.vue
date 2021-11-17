@@ -1,12 +1,12 @@
 <template lang="pug">
-    .tasks
-      h1.tasks__title Мои задачи
-      .tasks__container
-        .tasks__column-left
-          TasksList.tasks__tasklist
-          TasksButton(:text = "'Загрузить еще'")
-        .tasks__column-right 
-          TaskFilter
+  .tasks
+    h1.tasks__title Мои задачи
+    .tasks__container
+      .tasks__column-left
+        TasksList.tasks__tasklist
+        TasksButton(:text = "'Загрузить еще'")
+      .tasks__column-right 
+        TaskFilter
 
 </template>
 
@@ -25,7 +25,6 @@ export default {
 @import '@/common/index'
 
 .tasks
-  margin-top: 64px
 
   &__title
     font-family: "Montserrat-Bold"

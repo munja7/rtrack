@@ -5,9 +5,9 @@
         span.card__proj-descr &nbsp; {{ task.descr }}
       .card__content
         .card__col-left
-          CardSelect(:selectList = "task.status").card__select
-          CardSelect(:selectList = "task.author").card__select
-          CardSelect(:selectList = "task.priority").card__select
+          CardSelect(:selectList = "statuses").card__select
+          //- CardSelect(:selectList = "task.author").card__select
+          //- CardSelect(:selectList = "task.priority").card__select
         .card__col-right
           .card__date {{ task.date }}
           .card__sub-row
@@ -30,6 +30,47 @@ export default {
   components: {
     CardSelect: () => import("@/components/CardSelect.vue")
   },
+  data() {
+    return {
+      statuses: [
+              {
+                icon: 'in_progress.png',
+                text: 'Сделан',
+                color: '#D9F5E6',
+              },
+              {
+                icon: 'in_progress.png',
+                text: 'Нужна проверка',
+                color: '#D9F5E6',
+              },
+              {
+                icon: 'in_progress.png',
+                text: 'Нужна оценка',
+                color: '#D9F5E6',
+              },
+              {
+                icon: 'in_progress.png',
+                text: 'На утверждении',
+                color: '#D9F5E6',
+              },
+              {
+                icon: 'in_progress.png',
+                text: 'Нужны доработки',
+                color: '#D9F5E6',
+              },
+              {
+                icon: 'in_progress.png',
+                text: 'Новый',
+                color: '#D9F5E6',
+              },
+              {
+                icon: 'in_progress.png',
+                text: 'Все ОК',
+                color: '#D9F5E6',
+              },
+            ]
+    }
+  }
 }
 </script>
 
@@ -67,6 +108,7 @@ export default {
     justify-content: space-between
 
   &__col-left
+    display: flex
     width: 87%
     padding-top: 12px
 

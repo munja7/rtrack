@@ -1,9 +1,6 @@
 <template lang="pug">
   #app
     DefaultLayout
-    //- #nav
-    //-   router-link(to="/") Home |
-    //-   router-link(to="/about") About
   </div>
 </template>
 
@@ -28,17 +25,5 @@ export default {
 
 html
   background-color: $background-primary
-
-#nav 
-  padding: 30px
-
-  a 
-    font-weight: bold
-    color: #2c3e50
-
-    &.router-link-exact-active 
-      color: #42b983
-    
-  
 
 </style>

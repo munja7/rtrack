@@ -1,16 +1,11 @@
 <template lang="pug">
-  //- .select-container
-  //-   .select
-  //-     .select__icon
-  //-     span.select__text
-  //-     .select__dropdown-icon
-  //-   .select__options
-  //-     ul.select__list
-  //-       li.
-  select.select
-    option(v-for="(item, index) in selectList", :key="index").select__option 
-      .select__icon 
-      span.select__text {{ item.text }}
+  .select
+    .myclass ertfref
+    v-select(label="text" :options="selectList" :clearable="false")
+      template(#option="{ icon, text, color }")
+        .select__option
+          img(:src="require(`@/assets/images/${icon}`)").select__icon
+          .select__text {{ text }}
 </template>
 
 <script>
@@ -21,33 +16,35 @@ export default {
       type: Array,
       default: () => ([]),
     }
-  }
+  },
+  data() {
+    return {
+      color: 'red'    
+
+    }
+  },
 }
 </script>
 
 <style scoped lang="sass">
+
 @import '@/common/index'
 
+.myclass
+  color: v-bind(color)
+
 .select
-  -webkit-appearance: none
-  -moz-appearance: none
-  appearence: none
-  background: url(../assets/images/Vector.png) no-repeat right
-  padding: 5px
-  width: 225px
-
-  option
-    background: url(../assets/images/fire.png) no-repeat right
+  width: 250px
     
-
   &__option
-    background: url("../assets/images/fire.png") 0 0 no-repeat
-    background: red
+    display: flex
+    align-items: center
 
   &__icon
     width: 10px
     height: 10px
-    background: url("../assets/images/fire.png") 0 0 no-repeat
 
   &__text
+    color: v-bind('color')
+
 </style>

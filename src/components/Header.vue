@@ -6,27 +6,127 @@
         span.header__logo-text Rtrack
       nav.header__menu
         ul.header__menu-list
-          li(v-for="(item, index) in menu", :key="index", 
-            :class="[ item === 'Проекты' ? 'header__menu-item-projects' : '', 'header__menu-item']")
-            a(href="#").header__menu-link {{ item }}
-            span(v-if="item === 'Проекты'").header__dropdown-arrow 
+          li(v-for="(item, index) in menu", :key="index").header__menu-item
+            template(v-if="item.subMenu && item.subMenu.length > 0")
+              MenuDropdown
+                span(slot="target").header__menu-link {{ item.label }}
+                ProjectsMenu(slot="menu", :menu="item.subMenu")         
+            template(v-else)
+              a(:href="item.url").header__menu-link {{ item.label }}
       .header__user-area
         .header__star
           img(src = "@/assets/images/star.png")
         .header__bell
           img(src = "@/assets/images/bell.png")
         .header__user-profile
-          .header__avatar
-            img(src = "@/assets/images/avatar.png").header__avatar-image
-            span.header__dropdown-arrow
+          MenuDropdown
+            .header__avatar(slot="target")
+              img(src = "@/assets/images/avatar.png").header__avatar-image
+            UserMenu(slot="menu")
 </template>
 
 <script>
+import MenuDropdown from "@/components/MenuDropdown";
+
 export default {
   name: 'Header',
+  components: {
+    MenuDropdown,
+    UserMenu: () => import("@/components/UserMenu.vue"),
+    ProjectsMenu: () => import("../components/ProjectsMenu.vue"),
+  },
   data(){
     return{
-      menu: ['Проекты', 'Задачи для меня','База знаний','Все задачи','Просмотренные'],
+      menu: [
+        {
+          label: 'Проекты',
+          subMenu: [
+            {
+              label: 'RS digital',
+              is_favorite: true,
+              my_tasks: 4,
+              all_tasks: 5,
+            },
+            {
+              label: 'Rocketware',
+              is_favorite: true,
+              my_tasks: 4,
+              all_tasks: 12,
+            },
+            {
+              label: 'Самообразование',
+              is_favorite: true,
+              my_tasks: 0,
+              all_tasks: 10,
+            },
+            {
+              label: 'Mecto.ru',
+              is_favorite: false,
+              my_tasks: 0,
+              all_tasks: 45,
+            },
+            {
+              label: 'Travel-promo',
+              is_favorite: false,
+              my_tasks: 22,
+              all_tasks: 8,
+            },
+            {
+              label: 'B2B оружие',
+              is_favorite: false,
+              my_tasks: 9,
+              all_tasks: 30,
+            },
+            {
+              label: 'Кинотеатр "Москва"',
+              is_favorite: false,
+              my_tasks: 0,
+              all_tasks: 54,
+            },
+            {
+              label: 'Кинотеатр "Москва"',
+              is_favorite: false,
+              my_tasks: 0,
+              all_tasks: 54,
+            },
+            {
+              label: 'Кинотеатр "Москва"',
+              is_favorite: false,
+              my_tasks: 0,
+              all_tasks: 54,
+            },
+            {
+              label: 'Кинотеатр "Москва"',
+              is_favorite: false,
+              my_tasks: 0,
+              all_tasks: 54,
+            },
+            {
+              label: 'Кинотеатр "Москва"',
+              is_favorite: false,
+              my_tasks: 0,
+              all_tasks: 54,
+            },
+          ],
+        },
+        {
+          label: 'Задачи для меня',
+          url: '#',
+        },
+        {
+          label: 'База знаний',
+          url: '#',
+        },
+        {
+          label: 'Все задачи',
+          url: '#',
+        },
+        {
+          label: 'Просмотренные',
+          url: '#',
+        },
+      ],
+      userMenu: ["Профиль","Статистика","Токены","API",],
     }
   },
 }
@@ -34,6 +134,7 @@ export default {
 
 <style scoped lang="sass">
 @import '@/common/index'
+
 
 .header
   background-color: $background-secondary
@@ -43,7 +144,7 @@ export default {
     display: flex
     max-width: calc( 100% - 163px )
     margin: 0 auto
-    padding: 20px 0 25px 0
+    padding: 17px 0 20px 0
     align-items: center
 
   &__logo
@@ -75,14 +176,8 @@ export default {
 
   &__menu-item
     padding: 0 17.5px
-
-  &__menu-item-projects
-    &:hover
-      cursor: pointer
-      
-      .header__dropdown-arrow
-        transform: rotate(180deg)
-        transition: all .3s  ease-in-out
+    display: flex
+    align-items: center
 
   &__menu-link
     color: $text-primary
@@ -116,10 +211,6 @@ export default {
 
     &:hover
       cursor: pointer
-      
-      .header__dropdown-arrow
-        transform: rotate(180deg)
-        transition: all .3s  ease-in-out
 
   &__avatar-image
     display: block
@@ -127,12 +218,10 @@ export default {
     width: 42px
     height: 42px
 
-  &__dropdown-arrow
-    display: inline-block
-    background: url("../assets/images/Vector.png") no-repeat right center
-    width: 10px
-    height: 5px
-    margin-left: 10px
-    transition: all .3s  ease-in-out
+  &__user-menu
+    margin: 15px 20px 20px 20px
+
+  &__projects-menu
+    margin: 30px 25px
 
 </style>
