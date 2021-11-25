@@ -1,5 +1,5 @@
 <template lang="pug">
-  button.button 
+  button(@click="more").button 
     span.button__text {{ text }}
 </template>
 
@@ -8,6 +8,12 @@ export default {
   name: "TasksButton",
   props:{
     text: { type: String }
+  },
+  methods:{
+    more(){
+      console.log('more');
+      this.$store.commit('loadTasks');
+    }
   }
 }
 </script>

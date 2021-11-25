@@ -6,24 +6,37 @@
         span.filter__sort-method по дате
         .filter__icon
       .filter__content
-        select
-          option Проект
-        select
-          option Статус
-        select
-          option Приоритет
-        select
-          option Автор
-        select
-          option Участие
+        .filter__select
+          SelectCustom(:list="projects" :placeholder="'Проект'")
+        .filter__select
+          SelectCustom(:list="status" :placeholder="'Статус'")
+        .filter__select
+          SelectCustom(:list="priority" :placeholder="'Приоритет'")
+        .filter__select
+          SelectCustom(:list="author" :placeholder="'Автор'")
+        .filter__select
+          SelectCustom(:list="particip" :placeholder="'Участие'")
     TasksButton(:text = "'Очистить фильтр'")
+
 </template>
 
 <script>
 export default {
   name: "TaskFilter",
   components:{
-    TasksButton: () => import("@/components/TasksButton.vue")
+    TasksButton: () => import("@/components/TasksButton.vue"),
+    SelectCustom: () => import("@/components/SelectCustom.vue")
+  },
+  data(){
+    return{
+    }
+  },
+  computed:{
+    projects(){ return this.$store.state.projects; },
+    priority(){ return this.$store.state.priority; },
+    status(){ return this.$store.state.status; },
+    author(){ return this.$store.state.author; },
+    particip(){ return this.$store.state.particip; }
   }
 }
 </script>
@@ -66,14 +79,19 @@ export default {
   &__content
     padding: 20px
     padding-top: 30px
-
-  select
+  
+  &__select
     width: 100%
     margin-bottom: 15px
     height: 52px
 
+    & .vs__search
+      border: none
+      padding: 17px 20px
+
     &:last-child
       margin-bottom: 0
+    
     
 
 </style>

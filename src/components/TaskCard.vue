@@ -5,9 +5,12 @@
         span.card__proj-descr &nbsp; {{ task.descr }}
       .card__content
         .card__col-left
-          CardSelect(:selectList = "statuses").card__select
-          //- CardSelect(:selectList = "task.author").card__select
-          //- CardSelect(:selectList = "task.priority").card__select
+          .card__select
+            SelectCustom(:list="status" :value="task.status" :taskId="task.id", :type="'status'")
+          .card__select
+            SelectCustom(:list="author" :value="task.author" :taskId="task.id", :type="'author'")
+          .card__select
+            SelectCustom(:list="priority" :value="task.priority" :taskId="task.id", :type="'priority'")
         .card__col-right
           .card__date {{ task.date }}
           .card__sub-row
@@ -28,53 +31,28 @@ export default {
   }
 },
   components: {
-    CardSelect: () => import("@/components/CardSelect.vue")
+    Select: () => import("@/components/Select.vue"),
+    SelectCustom: () => import("@/components/SelectCustom.vue")
   },
   data() {
     return {
-      statuses: [
-              {
-                icon: 'in_progress.png',
-                text: 'Сделан',
-                color: '#D9F5E6',
-              },
-              {
-                icon: 'in_progress.png',
-                text: 'Нужна проверка',
-                color: '#D9F5E6',
-              },
-              {
-                icon: 'in_progress.png',
-                text: 'Нужна оценка',
-                color: '#D9F5E6',
-              },
-              {
-                icon: 'in_progress.png',
-                text: 'На утверждении',
-                color: '#D9F5E6',
-              },
-              {
-                icon: 'in_progress.png',
-                text: 'Нужны доработки',
-                color: '#D9F5E6',
-              },
-              {
-                icon: 'in_progress.png',
-                text: 'Новый',
-                color: '#D9F5E6',
-              },
-              {
-                icon: 'in_progress.png',
-                text: 'Все ОК',
-                color: '#D9F5E6',
-              },
-            ]
+    }
+  },
+  computed:{
+    priority(){
+      return this.$store.state.priority;
+    },
+    author(){
+      return this.$store.state.author
+    },
+    status(){
+      return this.$store.state.status
     }
   }
 }
 </script>
 
-<style scoped lang="sass">
+<style lang="sass">
 @import '@/common/index'
 
 
@@ -84,6 +62,69 @@ export default {
 
   &__select
     margin-right: 10px
+    width: 225px
+
+    & .select__option
+      display: flex
+      align-items: center
+      width: 225px
+      position: relative
+      border-radius: 5px
+      padding: 8px 20px 
+
+    & .select__icon
+      margin-right: 9px
+      max-width: 15px
+      height: 11px
+
+    & .select__text
+      font-size: 13px
+      line-height: 18px
+
+    & .vs__search,
+    & .vs__dropdown-toggle,
+    & .vs__dropdown-menu 
+      border: none
+
+    & .vs__dropdown-menu
+      margin-top: 35px
+      width: 100%
+      padding: 0
+
+    & .vs__dropdown-menu li 
+      padding: 0
+
+      & .select__option
+        border-radius: 0
+
+  & .vs__actions
+    display: flex
+    align-items: center
+    width: 25px
+    position: absolute
+    right: 0
+    top: 7px
+
+  & .vs__dropdown-toggle
+    padding: 0
+
+  & .vs__selected
+    margin: 0 
+    padding: 0 
+    border: 0
+
+    & .select__text
+      white-space: nowrap
+      overflow: hidden
+      text-overflow: ellipsis
+      max-width: 125px
+
+  & .vs__search
+    position: absolute
+    left: -5px
+
+  & .vs__open-indicator 
+    fill: #fff
 
   &__header
     display: flex
@@ -111,12 +152,6 @@ export default {
     display: flex
     width: 87%
     padding-top: 12px
-
-  &__status-select
-
-  &__author-select
-
-  &__priority-select
 
   &__col-right
     width: 12%
