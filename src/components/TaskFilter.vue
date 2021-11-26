@@ -7,15 +7,15 @@
         .filter__icon
       .filter__content
         .filter__select
-          SelectCustom(:list="projects" :placeholder="'Проект'")
+          SelectCustom(:list="projects" :placeholder="'Проект'" :filter="true" :type="'project'")
         .filter__select
-          SelectCustom(:list="status" :placeholder="'Статус'")
+          SelectCustom(:list="status" :placeholder="'Статус'" :filter="true" :type="'status'")
         .filter__select
-          SelectCustom(:list="priority" :placeholder="'Приоритет'")
+          SelectCustom(:list="priority" :placeholder="'Приоритет'" :filter="true" :type="'priority'")
         .filter__select
-          SelectCustom(:list="author" :placeholder="'Автор'")
+          SelectCustom(:list="author" :placeholder="'Автор'" :filter="true" :type="'author'")
         .filter__select
-          SelectCustom(:list="particip" :placeholder="'Участие'")
+          SelectCustom(:list="particip" :placeholder="'Участие'" :filter="true" :type="'particip'")
     TasksButton(:text = "'Очистить фильтр'")
 
 </template>
@@ -32,10 +32,10 @@ export default {
     }
   },
   computed:{
-    projects(){ return this.$store.state.projects; },
-    priority(){ return this.$store.state.priority; },
-    status(){ return this.$store.state.status; },
-    author(){ return this.$store.state.author; },
+    projects(){ return this.$store.getters.getFilterSelecr('project'); },
+    priority(){ return this.$store.getters.getFilterSelecr('priority'); },
+    status(){ return this.$store.getters.getFilterSelecr('status'); },
+    author(){ return this.$store.getters.getFilterSelecr('author'); },
     particip(){ return this.$store.state.particip; }
   }
 }

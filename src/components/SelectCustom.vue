@@ -11,14 +11,14 @@
 			:placeholder="placeholder"
 			@input="handler")
 			template(#option="{ icon, text, style, checked }" )
-				.select__option(:style="style" v-if="type != 'filter'")
+				.select__option(:style="style" v-if="!filter")
 					img(:src="require(`@/assets/images/${icon}`)").select__icon
 					.select__text {{ text }}
-				label.select__option(:style="style" v-if="type === 'filter'")
+				label.select__option(:style="style" v-if="filter")
 					input(type="checkbox" v-model="checked") 
 					.select__text {{ text }}
 			template(#selected-option="{ icon, text, style }" )
-				.select__option(:style="style" v-if="type != 'filter'")
+				.select__option(:style="style" v-if="!filter")
 					img(:src="require(`@/assets/images/${icon}`)").select__icon
 					.select__text {{ text }}
 
@@ -28,6 +28,10 @@
 export default {
     name: 'Selectcustom',
 		props:{
+			filter: {
+				type: Boolean,
+				default: false,
+			},
 			list:{
 				type: Array, 
 				default: () => ([])
@@ -41,7 +45,7 @@ export default {
 			},
 			type: {
 				type: String,
-				default: 'filter'
+				default: '',
 			},
 			taskId: {
 				type: Number,
@@ -55,8 +59,8 @@ export default {
 		},
 		methods:{
 			handler(){
-				console.log(this.selected);
-				if(this.type != 'filter')
+				console.log('selected',this.selected);
+				if(!this.filter)
 				{
 					this.list.find((el) => {
 						if(el.id === this.selected){
@@ -64,7 +68,7 @@ export default {
 								id: this.selected, taskId: this.taskId, property: this.type
 							}); 
 						}     
-        			});
+        	});
 				}
 				else{
 					this.list.find((el) => {
@@ -72,17 +76,13 @@ export default {
 							el.checked = !el.checked;
 						} 
 					});
-					console.log('selected', this.selected);
-          			this.$store.commit('filterTasks', {
-								status: this.selected
-							}); 
+					this.$store.commit('setFilter', {filter: this.selected, type: this.type});
 				}
         console.log(this.$store.state.tasks);	
 			}
 		},
 		mounted(){
 			this.value && (this.selected = this.value);
-			console.log(this.selected);
 		},
 
 }

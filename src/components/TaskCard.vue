@@ -40,13 +40,13 @@ export default {
   },
   computed:{
     priority(){
-      return this.$store.state.priority;
+      return this.$store.state.selects.priority;
     },
     author(){
-      return this.$store.state.author
+      return this.$store.state.selects.author
     },
     status(){
-      return this.$store.state.status
+      return this.$store.state.selects.status
     }
   }
 }
