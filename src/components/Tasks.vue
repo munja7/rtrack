@@ -4,7 +4,7 @@
     .tasks__container
       .tasks__column-left
         TasksList.tasks__tasklist
-        TasksButton(:text = "'Загрузить еще'")
+        TasksButton(:text = "'Загрузить еще'" @click.native="loadMore")
       .tasks__column-right 
         TaskFilter
 
@@ -17,6 +17,11 @@ export default {
       TasksList: () => import("@/components/TasksList.vue"),
       TaskFilter: () => import("@/components/TaskFilter.vue"),
       TasksButton: () => import("@/components/TasksButton.vue")
+    },
+    methods:{
+      loadMore(){
+        this.$store.commit('loadTasks');
+      }
     }
 }
 </script>

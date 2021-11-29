@@ -1,7 +1,7 @@
 <template lang="pug">
     .card
       .card__header
-        h5.card__proj-name {{ task.project }} &mdash; 
+        h5.card__proj-name {{ project }} &mdash; 
         span.card__proj-descr &nbsp; {{ task.descr }}
       .card__content
         .card__col-left
@@ -47,7 +47,10 @@ export default {
     },
     status(){
       return this.$store.state.selects.status
-    }
+    },
+    project(){
+      return this.$store.getters.getTaskProject(this.task.project);
+    },
   }
 }
 </script>

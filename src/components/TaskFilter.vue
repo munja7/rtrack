@@ -16,7 +16,7 @@
           SelectCustom(:list="author" :placeholder="'Автор'" :filter="true" :type="'author'")
         .filter__select
           SelectCustom(:list="particip" :placeholder="'Участие'" :filter="true" :type="'particip'")
-    TasksButton(:text = "'Очистить фильтр'")
+    TasksButton(:text = "'Очистить фильтр'" @click.native="filter")
 
 </template>
 
@@ -37,16 +37,60 @@ export default {
     status(){ return this.$store.getters.getFilterSelecr('status'); },
     author(){ return this.$store.getters.getFilterSelecr('author'); },
     particip(){ return this.$store.state.particip; }
+  },
+  methods:{
+    filter(){
+      console.log('filters');
+      this.$store.commit('resetFilters');
+    }
   }
 }
 </script>
 
-<style scoped lang="sass">
+<style lang="sass">
 @import '@/common/index'
 
 .filter
   max-width: 100%
   text-align: center
+
+  &__select
+    width: 100%
+    margin-bottom: 15px
+
+    & .select__label
+      display: flex
+      align-items: center
+      padding: 10px 0
+
+      & .select__input
+        display: block
+        margin-right: 10px
+        width: 17px
+        height: 17px
+
+      & .select__text
+        font-size: 14px
+        line-height: 18px
+
+    & .vs__search
+      border: none
+      padding: 9px 20px
+
+    & .vs__dropdown-option--highlight
+      background-color: rgba(216, 230, 255, 0.62)
+      color: $text-primary
+
+    &:last-child
+      margin-bottom: 0
+
+  & .vs__actions
+    display: flex
+    align-items: center
+    width: 25px
+    position: absolute
+    right: 8px
+    top: 17px
 
   &__main
     background-color: $background-secondary
@@ -80,17 +124,7 @@ export default {
     padding: 20px
     padding-top: 30px
   
-  &__select
-    width: 100%
-    margin-bottom: 15px
-    height: 52px
-
-    & .vs__search
-      border: none
-      padding: 17px 20px
-
-    &:last-child
-      margin-bottom: 0
+  
     
     
 

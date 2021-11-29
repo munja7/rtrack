@@ -1,5 +1,5 @@
 <template lang="pug">
-  button(@click="more").button 
+  button.button 
     span.button__text {{ text }}
 </template>
 
@@ -10,10 +10,10 @@ export default {
     text: { type: String }
   },
   methods:{
-    more(){
-      console.log('more');
-      this.$store.commit('loadTasks');
-    }
+    // more(){
+    //   console.log('more');
+    //   this.$store.commit('loadTasks');
+    // }
   }
 }
 </script>

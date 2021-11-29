@@ -14,8 +14,8 @@
 				.select__option(:style="style" v-if="!filter")
 					img(:src="require(`@/assets/images/${icon}`)").select__icon
 					.select__text {{ text }}
-				label.select__option(:style="style" v-if="filter")
-					input(type="checkbox" v-model="checked") 
+				label.select__label(v-if="filter")
+					input(type="checkbox" v-model="checked").select__input 
 					.select__text {{ text }}
 			template(#selected-option="{ icon, text, style }" )
 				.select__option(:style="style" v-if="!filter")
@@ -59,6 +59,7 @@ export default {
 		},
 		methods:{
 			handler(){
+				console.log('handler');
 				console.log('selected',this.selected);
 				if(!this.filter)
 				{
@@ -71,19 +72,28 @@ export default {
         	});
 				}
 				else{
+					this.$store.state.reset = false;
 					this.list.find((el) => {
 						if(el.id === this.selected){
-							el.checked = !el.checked;
+							this.$store.commit('setChecked', {type: this.type, id: this.selected});
 						} 
 					});
+					if(this.$store.state.mainSelect.length === 0){
+						this.$store.commit('setMainSelect', this.type);
+					}
+					
 					this.$store.commit('setFilter', {filter: this.selected, type: this.type});
 				}
         console.log(this.$store.state.tasks);	
 			}
 		},
 		mounted(){
-			this.value && (this.selected = this.value);
+			this.selected = this.value;
 		},
+		updated(){
+			if(this.filter)
+				this.$store.state.reset && (this.selected = null);
+		}
 
 }
 </script>

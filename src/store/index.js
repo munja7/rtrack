@@ -7,7 +7,9 @@ export default new Vuex.Store({
   state: {
     filter: null,
     filterProp: null,
+    reset: false,
     filteredTasks: [],
+    mainSelect: '',
     tasks: [
       {
         id: 1,
@@ -120,64 +122,6 @@ export default new Vuex.Store({
         priority: 6,
       },
     ],
-    // status: [
-    //   {
-    //     id: 1,
-    //     icon: 'in_progress.png',
-    //     text: 'В работе',
-    //     checked: false,
-    //     style: {backgroundColor: '#D9F5E6', color: '#32C979'},
-    //   },
-    //   {
-    //     id: 2,
-    //     icon: 'in_progress.png',
-    //     text: 'Сделан',
-    //     checked: false,
-    //     style: {backgroundColor: '#4ca197', color: '#326b63'},
-    //   },
-    //   {
-    //     id: 3,
-    //     icon: 'in_progress.png',
-    //     text: 'Нужна проверка',
-    //     checked: false,
-    //     style: {backgroundColor: '#c7ca6a', color: '#75763e'},
-    //   },
-    //   {
-    //     id: 4,
-    //     icon: 'in_progress.png',
-    //     text: 'Нужна оценка',
-    //     checked: false,
-    //     style: {backgroundColor: '#8d97d2', color: '#505678'},
-    //   },
-    //   {
-    //     id: 5,
-    //     icon: 'in_progress.png',
-    //     text: 'На утверждении',
-    //     checked: false,
-    //     style: {backgroundColor: '#9362ff', color: '#4f368c'},
-    //   },
-    //   {
-    //     id: 6,
-    //     icon: 'in_progress.png',
-    //     text: 'Нужны доработки',
-    //     checked: false,
-    //     style: {backgroundColor: '#e14c4c', color: '#792828'},
-    //   },
-    //   {
-    //     id: 7,
-    //     icon: 'in_progress.png',
-    //     text: 'Новый',
-    //     checked: false,
-    //     style: {backgroundColor: '#f77b72', color: '#a5524c'},
-    //   },
-    //   {
-    //     id: 8,
-    //     icon: 'in_progress.png',
-    //     text: 'Все ОК',
-    //     checked: false,
-    //     style: {backgroundColor: '#b9db93', color: '#768b5d'},
-    //   },
-    // ],
     filterStatus: [],
     particip: [],
 
@@ -372,8 +316,12 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    getTaskProject: state => id => {
+      return state.selects.project.find(el => el.id === id).text;
+    },
     getFilterSelecr: state => name => {
-      state.filteredSelect[name] = [];
+      if(state.mainSelect != name){
+        state.filteredSelect[name] = [];
       const tasks = state.filteredTasks.length > 0 ? state.filteredTasks : state.tasks;
       tasks.forEach((elTasks) => {
         state.selects[name].forEach((el) => {
@@ -384,36 +332,37 @@ export default new Vuex.Store({
       state.filteredSelect[name] = state.filteredSelect[name].filter(function(elem, pos) {
         return state.filteredSelect[name].indexOf(elem) == pos;
     });
+      }
+      
       return state.filteredSelect[name];
     },
-    // getFilterStatus: state => {
-    //   state.filterStatus = [];
-    //   const tasks = state.filteredTasks.length > 0 ? state.filteredTasks : state.tasks;
-    //   tasks.forEach((elTasks) => {
-    //     state.status.forEach((elStatus) => {
-    //       if(elStatus.id === elTasks.status)
-    //         state.filterStatus.push(elStatus);
-    //     })
-    //   } )
-    //   state.filterStatus = state.filterStatus.filter(function(elem, pos) {
-    //     return state.filterStatus.indexOf(elem) == pos;
-    // });
-    //   console.log('filterStatus', state.filterStatus);
-    //   return state.filterStatus;
-    // },
-    getTasks: state => {
-      console.log('filter', state.filter); 
+    getTasks: state => { 
+
+//////////
+      const tasks = (state.mainSelect == state.filterProp) ? state.filteredTasks : state.tasks
+
+///////////
       if(state.filter){
-        console.log('filterProp', state.filterProp);
-        
-        const filtered = state.tasks.filter(task => task[state.filterProp] === state.filter);
-        filtered.forEach(el => state.filteredTasks.push(el))
+        const filtered = tasks.filter(task => task[state.filterProp] === state.filter);
+        state.filteredTasks = [];
+        filtered.forEach(el => state.filteredTasks.push(el));
         return state.filteredTasks;
       }
-      return state.tasks;
+      state.filteredTasks = state.tasks;
+      return state.filteredTasks;
     },
   },
   mutations: {
+    setMainSelect(state, name){
+      state.mainSelect = name;
+    },
+    setChecked(state, payload){
+      state.selects[payload.type].find(el => {
+        if(el.id === payload.id){
+          el.checked = !el.checked;
+        }
+      });
+    },
     setFilter(state, payload){
       state.filter = payload.filter;
       state.filterProp = payload.type;
@@ -435,9 +384,21 @@ export default new Vuex.Store({
     loadTasks(state){
       const newTasks = state.tasks.slice(0, 3);
       for(let i = 0; i < newTasks.length; i++){
-        state.tasks.push(newTasks[i]);
+        state.filteredTasks.push(newTasks[i]);
       } 
-    }
+    },
+    resetFilters(state){
+      for (let key in state.selects) {
+        if(state.selects.hasOwnProperty(key)){
+          state.selects[key].forEach(el => el.checked = false);
+        }
+      }
+      state.mainSelect = '';
+      state.reset = true;
+      state.filter = null;
+      state.filterProp = null;
+      
+    },
   },
   actions: {
   },
